@@ -1,0 +1,6 @@
+{
+  "name": "PaperPlane PDF - Free, Friendly Online PDF Editor",
+  "description": "Fly through your documents. Effortlessly merge, split, compress, and organize PDFs right in your browser with 100% privacy and zero uploads.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

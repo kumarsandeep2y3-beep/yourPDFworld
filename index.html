@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <script>
+      // Suppress transient WebSocket errors from Vite HMR in cloud iframe preview
+      (function () {
+        if (typeof Promise.try !== 'function') {
+          Promise.try = function (fn) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return new Promise(function (resolve) {
+              resolve(fn.apply(null, args));
+            });
+          };
+        }
+
+        // Mock WebSocket for Vite HMR to prevent "WebSocket closed without opened" in cloud iframe
+        if (typeof window !== 'undefined' && window.WebSocket) {
+          var OrigWebSocket = window.WebSocket;
+          var MockWebSocket = function (url, protocols) {
+            var isViteHmr = false;
+            if (typeof protocols === 'string' && protocols === 'vite-hmr') isViteHmr = true;
+            if (Array.isArray(protocols) && protocols.indexOf('vite-hmr') !== -1) isViteHmr = true;
+            if (typeof url === 'string' && (url.indexOf('vite') !== -1 || url.indexOf('token=') !== -1)) isViteHmr = true;
+
+            if (isViteHmr) {
+              var target = new EventTarget();
+              var mock = {
+                url: url,
+                protocol: 'vite-hmr',
+                readyState: 0,
+                CONNECTING: 0,
+                OPEN: 1,
+                CLOSING: 2,
+                CLOSED: 3,
+                send: function () {},
+                close: function () {
+                  mock.readyState = 3;
+                  target.dispatchEvent(new Event('close'));
+                },
+                addEventListener: target.addEventListener.bind(target),
+                removeEventListener: target.removeEventListener.bind(target),
+                dispatchEvent: target.dispatchEvent.bind(target),
+                onopen: null,
+                onclose: null,
+                onerror: null,
+                onmessage: null,
+              };
+
+              setTimeout(function () {
+                mock.readyState = 1;
+                var openEvt = new Event('open');
+                if (typeof mock.onopen === 'function') mock.onopen(openEvt);
+                target.dispatchEvent(openEvt);
+              }, 10);
+
+              return mock;
+            }
+
+            return new OrigWebSocket(url, protocols);
+          };
+
+          MockWebSocket.CONNECTING = 0;
+          MockWebSocket.OPEN = 1;
+          MockWebSocket.CLOSING = 2;
+          MockWebSocket.CLOSED = 3;
+          MockWebSocket.prototype = OrigWebSocket.prototype;
+          window.WebSocket = MockWebSocket;
+        }
+
+        var origConsoleError = console.error;
+        console.error = function () {
+          var args = Array.prototype.slice.call(arguments);
+          var msg = args.map(function (a) {
+            return (a && a.message) || String(a || '');
+          }).join(' ');
+          if (
+            msg.indexOf('WebSocket') !== -1 ||
+            msg.indexOf('closed without opened') !== -1 ||
+            msg.indexOf('[vite] failed to connect to websocket') !== -1
+          ) {
+            return;
+          }
+          origConsoleError.apply(console, args);
+        };
+
+        var origConsoleWarn = console.warn;
+        console.warn = function () {
+          var args = Array.prototype.slice.call(arguments);
+          var msg = args.map(function (a) {
+            return (a && a.message) || String(a || '');
+          }).join(' ');
+          if (
+            msg.indexOf('WebSocket') !== -1 ||
+            msg.indexOf('closed without opened') !== -1 ||
+            msg.indexOf('[vite]') !== -1
+          ) {
+            return;
+          }
+          origConsoleWarn.apply(console, args);
+        };
+
+        window.addEventListener('unhandledrejection', function (event) {
+          var msg = (event && event.reason && (event.reason.message || String(event.reason))) || '';
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('closed without opened') !== -1) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        });
+        window.addEventListener('error', function (event) {
+          var msg = (event && (event.message || (event.error && (event.error.message || String(event.error))))) || '';
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('closed without opened') !== -1) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        });
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>yourPDFworld.com - Your Complete PDF Solution</title>
+    <meta name="description" content="Free online PDF tools. Fast, secure and easy to use. Effortlessly merge, split, compress, edit text, convert, and manage PDFs right in your browser on yourPDFworld.com with 100% privacy and zero uploads." />
+    <meta property="og:title" content="yourPDFworld.com - Your Complete PDF Solution" />
+    <meta property="og:description" content="Free online PDF tools. Fast, secure and easy to use. 100% Client-Side Private PDF Solution." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="yourPDFworld.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="yourPDFworld.com - Your Complete PDF Solution" />
+    <meta name="twitter:description" content="Free online PDF tools. Fast, secure and easy to use. 100% private client-side PDF solution." />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="yourPDFworld" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      // Global fallback theme & share utilities
+      window.toggleTheme = function() {
+        var html = document.documentElement;
+        var btn = document.getElementById('themeToggleBtn');
+        if (html.classList.contains('dark')) {
+          html.classList.remove('dark');
+          if (btn) btn.textContent = '☀️';
+          localStorage.setItem('yourpdfworld_theme_mode', 'light');
+        } else {
+          html.classList.add('dark');
+          if (btn) btn.textContent = '🌙';
+          localStorage.setItem('yourpdfworld_theme_mode', 'dark');
+        }
+      };
+
+      window.shareApp = async function() {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: 'yourPDFworld.com',
+              text: 'Check out yourPDFworld.com - Your Complete PDF Solution.',
+              url: window.location.href
+            });
+          } catch (err) {
+            console.log('Share canceled');
+          }
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(window.location.href);
+          alert('Link copied to clipboard!');
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 bg-slate-50 text-slate-900 min-h-screen flex flex-col transition-colors duration-300 pb-20 selection:bg-cyan-500/20 selection:text-cyan-500">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

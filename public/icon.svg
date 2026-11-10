@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient: Clean Blue & Dark Sapphire -->
+    <linearGradient id="justPdfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+
+    <!-- Document Surface Gradient -->
+    <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f0f7ff" />
+    </linearGradient>
+
+    <!-- Fold Corner Gradient -->
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93c5fd" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+
+    <!-- Edit Pen / Nib Accent Gradient -->
+    <linearGradient id="penGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+
+    <!-- Soft Drop Shadow for Document Elevation -->
+    <filter id="docShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#0f172a" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Container Rounded Squircle -->
+  <rect width="512" height="512" rx="120" fill="url(#justPdfBg)" />
+  <rect width="512" height="512" rx="120" fill="none" stroke="#60a5fa" stroke-width="3" stroke-opacity="0.3" />
+
+  <!-- Document Sheet with Folded Corner -->
+  <g filter="url(#docShadow)">
+    <!-- Base Document with Top-Right Fold cutout -->
+    <path d="M 148 100
+             L 296 100
+             L 364 168
+             L 364 412
+             C 364 425.2, 353.2 436, 340 436
+             L 148 436
+             C 134.8 436, 124 425.2, 124 412
+             L 124 124
+             C 124 110.8, 134.8 100, 148 100 Z"
+          fill="url(#docGrad)" />
+
+    <!-- Top-Right Corner Fold -->
+    <path d="M 296 100
+             L 364 168
+             L 316 168
+             C 305 168, 296 159, 296 148 Z"
+          fill="url(#foldGrad)" />
+
+    <!-- Document Content Lines -->
+    <rect x="168" y="196" width="176" height="18" rx="9" fill="#93c5fd" opacity="0.65" />
+    <rect x="168" y="238" width="140" height="16" rx="8" fill="#bfdbfe" opacity="0.8" />
+    <rect x="168" y="278" width="112" height="16" rx="8" fill="#bfdbfe" opacity="0.8" />
+
+    <!-- Modern Editing Nib Symbol (Precision Vector Pen Angle) -->
+    <g transform="translate(230, 260) rotate(-40)">
+      <!-- Pen Body -->
+      <path d="M 40 0 L 110 0 C 114 0, 117 3, 117 7 L 117 25 C 117 29, 114 32, 110 32 L 40 32 Z" fill="#2563eb" />
+      <!-- Pen Collar -->
+      <path d="M 28 0 L 40 0 L 40 32 L 28 32 Z" fill="#1d4ed8" />
+      <!-- Pen Nib Tip -->
+      <path d="M 28 0 L 0 16 L 28 32 Z" fill="#60a5fa" />
+      <!-- Ink Slit -->
+      <line x1="0" y1="16" x2="16" y2="16" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+    </g>
+
+    <!-- 'PDF' Micro-Wordmark Badge at Bottom of Sheet -->
+    <rect x="168" y="364" width="76" height="34" rx="8" fill="#2563eb" />
+    <text x="206" y="388" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="19" fill="#ffffff" text-anchor="middle" letter-spacing="1">PDF</text>
+  </g>
+</svg>
